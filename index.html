@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyExpenz — Expense Tracking, Beautifully Simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafafa;
+    --bg-alt: #ffffff;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --accent: #0071e3;
+    --accent-hover: #0077ED;
+    --surface: #f5f5f7;
+    --surface-elevated: #ffffff;
+    --border: rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ──────── NAV ──────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(250, 250, 250, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #34c759, #30d158);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 14px;
+    box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+  }
+  .nav-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+
+  /* ──────── HERO ──────── */
+  .hero {
+    padding: 140px 32px 80px;
+    text-align: center;
+    max-width: 1080px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--surface);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge span {
+    width: 6px; height: 6px;
+    background: #34c759;
+    border-radius: 50%;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 6vw, 4.2rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #34c759, #00c7be);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+    font-weight: 400;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  /* ──── Phone Mockup ──── */
+  .phone-container {
+    display: flex;
+    justify-content: center;
+    animation: fadeUp 1s 0.35s ease both;
+    margin-bottom: 20px;
+  }
+  .phone {
+    width: 280px;
+    background: var(--surface-elevated);
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--border);
+    position: relative;
+  }
+  .phone-screen {
+    background: #fff;
+    border-radius: 26px;
+    overflow: hidden;
+    aspect-ratio: 9/17;
+    position: relative;
+  }
+  .phone-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .phone-status-bar .dots { display: flex; gap: 3px; }
+  .phone-status-bar .dots span { width: 4px; height: 8px; background: var(--text-primary); border-radius: 1px; }
+  .phone-notch {
+    width: 100px; height: 26px;
+    background: #000;
+    border-radius: 0 0 16px 16px;
+    margin: -6px auto 0;
+    position: relative;
+    z-index: 2;
+  }
+  .screen-content {
+    padding: 16px 18px;
+  }
+  .screen-greeting {
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    margin-bottom: 2px;
+  }
+  .screen-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .screen-card {
+    background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
+    border-radius: 16px;
+    padding: 18px;
+    color: white;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .screen-card::after {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    background: rgba(52, 199, 89, 0.15);
+    border-radius: 50%;
+    filter: blur(20px);
+  }
+  .card-label { font-size: 0.6rem; opacity: 0.6; margin-bottom: 4px; }
+  .card-amount {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+  }
+  .card-bar-row {
+    display: flex;
+    gap: 3px;
+    height: 4px;
+  }
+  .card-bar {
+    border-radius: 2px;
+    flex: 1;
+    opacity: 0.9;
+  }
+  .card-bar:nth-child(1) { background: #34c759; flex: 3; }
+  .card-bar:nth-child(2) { background: #ff9f0a; flex: 1.5; }
+  .card-bar:nth-child(3) { background: #5e5ce6; flex: 1; }
+  .card-bar:nth-child(4) { background: rgba(255,255,255,0.15); flex: 2; }
+
+  .screen-section-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+  .screen-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .screen-row:last-child { border-bottom: none; }
+  .row-icon {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+  }
+  .row-icon.groceries { background: #fef3e2; }
+  .row-icon.transport { background: #e8f4fd; }
+  .row-icon.coffee { background: #fce4ec; }
+  .row-text { flex: 1; }
+  .row-text .name { font-size: 0.7rem; font-weight: 600; }
+  .row-text .sub { font-size: 0.55rem; color: var(--text-tertiary); }
+  .row-amount {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* ──────── FEATURES ──────── */
+  .features {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 60px 32px 80px;
+  }
+  .features-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .features-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .features-header p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .feature-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  .feature-icon.green { background: rgba(52, 199, 89, 0.1); }
+  .feature-icon.blue { background: rgba(0, 113, 227, 0.08); }
+  .feature-icon.orange { background: rgba(255, 159, 10, 0.1); }
+  .feature-icon.purple { background: rgba(94, 92, 230, 0.1); }
+  .feature-icon.teal { background: rgba(0, 199, 190, 0.1); }
+  .feature-icon.pink { background: rgba(255, 55, 95, 0.08); }
+
+  .feature-card h3 {
+    font-size: 1rem;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .feature-card p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ──────── FOOTER ──────── */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .footer-brand {
+    max-width: 300px;
+  }
+  .footer-brand .logo {
+    margin-bottom: 10px;
+  }
+  .footer-brand p {
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    line-height: 1.55;
+  }
+  .footer-columns {
+    display: flex;
+    gap: 64px;
+  }
+  .footer-col h4 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    margin-bottom: 14px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer-col a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 450;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--text-primary); }
+  .footer-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 24px;
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-bottom span {
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+  }
+  .footer-bottom-links {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-bottom-links a {
+    text-decoration: none;
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+    transition: color 0.2s;
+  }
+  .footer-bottom-links a:hover { color: var(--text-secondary); }
+
+  /* ──── LEGAL PAGES (inline) ──── */
+  .legal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: fadeIn 0.25s ease;
+  }
+  .legal-overlay.active { display: flex; }
+  .legal-modal {
+    background: var(--surface-elevated);
+    border-radius: 20px;
+    max-width: 640px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 40px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .legal-modal h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .legal-modal p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .legal-modal h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 20px 0 8px;
+  }
+  .close-btn {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    transition: background 0.2s;
+  }
+  .close-btn:hover { background: #e8e8ed; }
+
+  /* ──── ANIMATIONS ──── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ──── RESPONSIVE ──── */
+  @media (max-width: 768px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .footer-top { flex-direction: column; }
+    .footer-columns { gap: 40px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 20px 60px; }
+    .features { padding: 40px 20px 60px; }
+    .footer-inner { padding: 32px 20px; }
+    .phone { width: 240px; }
+  }
+  @media (max-width: 480px) {
+    .footer-columns { flex-direction: column; gap: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      MyExpenz
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span></span> Smart expense tracking</div>
+  <h1>Your finances,<br><em>beautifully clear.</em></h1>
+  <p>Track every expense, visualise your spending habits, and stay on top of budgets — all in one elegant, intuitive app.</p>
+
+  <div class="phone-container">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+        <div class="phone-status-bar">
+          <span>9:41</span>
+          <div class="dots"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-greeting">Good morning</div>
+          <div class="screen-title">March Overview</div>
+          <div class="screen-card">
+            <div class="card-label">Total spent</div>
+            <div class="card-amount">€1,247.80</div>
+            <div class="card-bar-row">
+              <div class="card-bar"></div>
+              <div class="card-bar"></div>
+              <div class="card-bar"></div>
+              <div class="card-bar"></div>
+            </div>
+          </div>
+          <div class="screen-section-title">Recent</div>
+          <div class="screen-row">
+            <div class="row-icon groceries">🛒</div>
+            <div class="row-text">
+              <div class="name">Groceries</div>
+              <div class="sub">Colruyt · Today</div>
+            </div>
+            <div class="row-amount">-€68.40</div>
+          </div>
+          <div class="screen-row">
+            <div class="row-icon transport">🚆</div>
+            <div class="row-text">
+              <div class="name">Transport</div>
+              <div class="sub">NMBS · Yesterday</div>
+            </div>
+            <div class="row-amount">-€12.80</div>
+          </div>
+          <div class="screen-row">
+            <div class="row-icon coffee">☕</div>
+            <div class="row-text">
+              <div class="name">Coffee</div>
+              <div class="sub">Starbucks · Mar 17</div>
+            </div>
+            <div class="row-amount">-€4.90</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header reveal">
+    <h2>Everything you need.<br>Nothing you don't.</h2>
+    <p>Designed to feel native, work fast, and give you real insight into where your money goes.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon green">📊</div>
+      <h3>Visual KPIs</h3>
+      <p>Beautiful charts and graphs that show spending patterns at a glance. Daily, weekly, monthly — your choice.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon blue">💰</div>
+      <h3>Smart Budgets</h3>
+      <p>Set budgets per category and get notified before you overspend. Stay in control, effortlessly.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon orange">🏷️</div>
+      <h3>Custom Tags</h3>
+      <p>Tag expenses your way. Holidays, subscriptions, shared costs — organise everything with flexible labels.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon purple">📱</div>
+      <h3>iOS Native Feel</h3>
+      <p>Crafted for Apple users. Smooth animations, haptic feedback, and design language that feels right at home.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon teal">📈</div>
+      <h3>Overviews & Trends</h3>
+      <p>See the bigger picture with trend lines, category breakdowns, and monthly comparisons all in one view.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon pink">🔒</div>
+      <h3>Private & Secure</h3>
+      <p>Your financial data stays on your device. No cloud. No tracking. No ads. Just privacy, by design.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">M</div>
+          MyExpenz
+        </div>
+        <p>Simple, beautiful expense tracking for people who value clarity and privacy.</p>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a></li>
+            <li><a href="#" onclick="openModal('terms'); return false;">Terms of Use</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@myexpenz.app">hello@myexpenz.app</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 MyExpenz. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#" onclick="openModal('privacy'); return false;">Privacy</a>
+        <a href="#" onclick="openModal('terms'); return false;">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- PRIVACY MODAL -->
+<div class="legal-overlay" id="privacy-modal">
+  <div class="legal-modal">
+    <button class="close-btn" onclick="closeModals()">✕</button>
+    <h2>Privacy Policy</h2>
+    <p><strong>Last updated:</strong> March 19, 2026</p>
+    <p>MyExpenz ("we", "our", or "the App") is committed to protecting your privacy. This Privacy Policy explains how we handle your information.</p>
+
+    <h3>Data Collection</h3>
+    <p>MyExpenz does not collect, transmit, or store any personal data on external servers. All expense data, budgets, tags, and preferences are stored locally on your device.</p>
+
+    <h3>No Tracking</h3>
+    <p>We do not use analytics, advertising trackers, or third-party SDKs that collect user behaviour data. Your usage of the app remains entirely private.</p>
+
+    <h3>Data Storage</h3>
+    <p>All data is stored on your device using secure local storage mechanisms provided by iOS. We do not have access to your financial information at any time.</p>
+
+    <h3>Third-Party Services</h3>
+    <p>MyExpenz does not share data with any third parties. The app functions entirely offline and does not require an internet connection.</p>
+
+    <h3>Your Rights</h3>
+    <p>Since all data is stored locally on your device, you have full control over it at all times. You can delete all app data by uninstalling the application.</p>
+
+    <h3>Changes</h3>
+    <p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated date.</p>
+
+    <h3>Contact</h3>
+    <p>For questions about this Privacy Policy, contact us at <a href="mailto:hello@myexpenz.app" style="color: var(--accent);">hello@myexpenz.app</a></p>
+  </div>
+</div>
+
+<!-- TERMS MODAL -->
+<div class="legal-overlay" id="terms-modal">
+  <div class="legal-modal">
+    <button class="close-btn" onclick="closeModals()">✕</button>
+    <h2>Terms of Use</h2>
+    <p><strong>Last updated:</strong> March 19, 2026</p>
+    <p>By downloading or using MyExpenz, you agree to these Terms of Use. Please read them carefully.</p>
+
+    <h3>Use of the App</h3>
+    <p>MyExpenz is a personal finance tracking tool intended for individual, non-commercial use. You are responsible for maintaining the accuracy of the data you enter.</p>
+
+    <h3>Intellectual Property</h3>
+    <p>All content, design, and code within MyExpenz are the property of MyExpenz and are protected by applicable intellectual property laws. You may not copy, modify, or distribute any part of the app.</p>
+
+    <h3>No Financial Advice</h3>
+    <p>MyExpenz is a tracking and organisational tool only. It does not provide financial, investment, tax, or legal advice. Always consult a qualified professional for financial decisions.</p>
+
+    <h3>Limitation of Liability</h3>
+    <p>MyExpenz is provided "as is" without warranties of any kind. We are not liable for any loss or damage arising from the use of the app, including but not limited to data loss or inaccurate tracking.</p>
+
+    <h3>Termination</h3>
+    <p>You may stop using MyExpenz at any time by deleting the app from your device. All associated data will be removed upon uninstallation.</p>
+
+    <h3>Governing Law</h3>
+    <p>These Terms are governed by the laws of Belgium. Any disputes shall be subject to the exclusive jurisdiction of Belgian courts.</p>
+
+    <h3>Contact</h3>
+    <p>For questions about these Terms, contact us at <a href="mailto:hello@myexpenz.app" style="color: var(--accent);">hello@myexpenz.app</a></p>
+  </div>
+</div>
+
+<script>
+  // Modal handlers
+  function openModal(type) {
+    closeModals();
+    document.getElementById(type + '-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModals() {
+    document.querySelectorAll('.legal-overlay').forEach(m => m.classList.remove('active'));
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.legal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModals(); });
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

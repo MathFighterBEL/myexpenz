@@ -678,7 +678,7 @@
         <div class="footer-col">
           <h4>Contact</h4>
           <ul>
-            <li><a href="/cdn-cgi/l/email-protection#553834213d0a21226563153d3a2138343c397b363a38"><span class="__cf_email__" data-cfemail="6805091c00371c1f585e2800071c05090104460b0705">[email&#160;protected]</span></a></li>
+            <li><a href="/cdn-cgi/l/email-protection#cea3afbaa691bab9fef88ea6a1baa3afa7a2e0ada1a3"><span class="__cf_email__" data-cfemail="a9c4c8ddc1f6ddde999fe9c1c6ddc4c8c0c587cac6c4">[email&#160;protected]</span></a></li>
             <li style="margin-top: 6px; font-size: 0.82rem; color: var(--text-tertiary);">Feedback &amp; feature requests welcome!</li>
           </ul>
         </div>
@@ -740,7 +740,7 @@
     <p>We may update this privacy policy from time to time. Updates will be reflected in the app and on this website. We will notify you of any significant changes through the app. We encourage you to review this policy periodically.</p>
 
     <h3>Contact</h3>
-    <p>If you have questions about this privacy policy, wish to exercise your data protection rights, or would like to share feedback or feature requests, please contact us at <a href="/cdn-cgi/l/email-protection#ec818d9884b3989bdcdaac848398818d8580c28f8381"><span class="__cf_email__" data-cfemail="bfd2decbd7e0cbc88f89ffd7d0cbd2ded6d391dcd0d2">[email&#160;protected]</span></a></p>
+    <p>If you have questions about this privacy policy, wish to exercise your data protection rights, or would like to share feedback or feature requests, please contact us at <a href="/cdn-cgi/l/email-protection#7a171b0e12250e0d4a4c3a12150e171b131654191517"><span class="__cf_email__" data-cfemail="bbd6dacfd3e4cfcc8b8dfbd3d4cfd6dad2d795d8d4d6">[email&#160;protected]</span></a></p>
   </div>
 </div>
 
@@ -800,12 +800,11 @@
     <p>These Terms shall be governed by and construed in accordance with the laws of Belgium. Any disputes arising from these Terms or your use of the App shall be subject to the exclusive jurisdiction of the courts of Belgium, without prejudice to any mandatory consumer protection rules of your country of residence.</p>
 
     <h3>17. Contact</h3>
-    <p>For questions about these Terms of Use, feedback, or feature requests, please contact us at <a href="/cdn-cgi/l/email-protection#412c2035291e3536717701292e352c20282d6f222e2c"><span class="__cf_email__" data-cfemail="d6bbb7a2be89a2a1e6e096beb9a2bbb7bfbaf8b5b9bb">[email&#160;protected]</span></a></p>
+    <p>For questions about these Terms of Use, feedback, or feature requests, please contact us at <a href="/cdn-cgi/l/email-protection#610c0015093e1516515721090e150c00080d4f020e0c"><span class="__cf_email__" data-cfemail="a3cec2d7cbfcd7d49395e3cbccd7cec2cacf8dc0ccce">[email&#160;protected]</span></a></p>
   </div>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Route-to-modal mapping
   var routeMap = {
     '/privacypolicy': 'privacy',
     '/termsofuse': 'terms'
@@ -815,7 +814,6 @@
     closeModals(true);
     document.getElementById(type + '-modal').classList.add('active');
     document.body.style.overflow = 'hidden';
-    // Push URL state (unless we're handling a popstate or initial load)
     if (pushState !== false) {
       var path = type === 'privacy' ? '/privacypolicy' : '/termsofuse';
       history.pushState({ modal: type }, '', path);
@@ -827,13 +825,12 @@
       el.classList.remove('active');
     });
     document.body.style.overflow = '';
-    // Push back to root unless silent (internal call)
     if (silent !== true && window.location.pathname !== '/') {
       history.pushState({}, '', '/');
     }
   }
 
-  // Click handler for legal links — intercept and use SPA routing
+  // Intercept clicks on legal links for SPA routing
   document.addEventListener('click', function(e) {
     var link = e.target.closest('a');
     if (!link) return;
@@ -844,7 +841,7 @@
     }
   });
 
-  // Handle overlay click to close
+  // Close modal on overlay click
   document.querySelectorAll('.legal-overlay').forEach(function(overlay) {
     overlay.addEventListener('click', function(e) {
       if (e.target === overlay) closeModals();
@@ -861,11 +858,19 @@
     }
   });
 
-  // On initial page load, check if URL matches a legal route
+  // On load: check URL path OR query param from 404.html redirect
   (function() {
-    var modal = routeMap[window.location.pathname];
-    if (modal) {
-      openModal(modal, false);
+    var path = window.location.pathname;
+    // Handle redirect from 404.html (e.g., /?p=/privacypolicy)
+    var params = new URLSearchParams(window.location.search);
+    var redirectPath = params.get('p');
+    if (redirectPath && routeMap[redirectPath]) {
+      history.replaceState(null, '', redirectPath);
+      openModal(routeMap[redirectPath], false);
+      return;
+    }
+    if (routeMap[path]) {
+      openModal(routeMap[path], false);
     }
   })();
 </script>
